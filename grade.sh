@@ -13,8 +13,19 @@ then
     cp student-submission/ListExamples.java grading-area/
     cp TestListExamples.java grading-area/
 else 
-    echo "Missing ListExamples.java file."
-    exit 1
+    find student-submission -name "ListExamples.java" > foundFile.txt
+    foundFile=$(cat foundFile.txt)
+    fileEmpty=$(wc -l foundFile.txt)
+    numLines=$(echo $fileEmpty | awk '{print $1}')
+    echo $fileEmpty 
+    if [[ $numLines -ne 0 ]]
+    then
+        cp $foundFile grading-area/
+        cp TestListExamples.java grading-area/
+    else
+        echo "Missing ListExamples.java file."
+        exit 1
+    fi
 fi 
 
 cd grading-area
