@@ -66,7 +66,6 @@ if [[ percentage -eq 1 ]]
 then
     echo "or 100%"
 else
-    decmial=1.0
     percentage=$(echo "scale=2; 100 * $successes / $tests" | bc)
     echo "or $percentage%"
 fi
