@@ -32,14 +32,32 @@ fi
 
 java -cp $CPATH org.junit.runner.JUnitCore TestListExamples > junit-output.txt
 
+
 lastline=$(cat junit-output.txt | tail -n 2)
-tests=$(echo $lastline | awk -F'[, ]' '{print $3}')
-failures=$(echo $lastline | awk -F'[, ]' '{print $6}')
-successes=$((tests - failures))
+echo $lastline > checksuccess.txt
+issuccessbinary=$(grep -q "OK" checksuccess.txt)
+
+if [[ $? -eq 0 ]]
+then
+    echo "THIS WAS A SUCCESSFUL TEST"
+    tests=$(echo $lastline | awk -F'[( ]' '{print $3}')
+    successes=$tests
+else
+    echo $lastline "This is the last line-----"
+    tests=$(echo $lastline | awk -F'[, ]' '{print $3}')
+    failures=$(echo $lastline | awk -F'[, ]' '{print $6}')
+    successes=$((tests - failures))
+fi
 
 echo "Your score is $successes / $tests"
-echo "or $((successes/tests))"
-
+percentage=$(( successes / tests ))
+if [[ percentage -eq 1 ]]
+then
+    echo "or 100%"
+else
+    percentage=$(( successes / tests * 100 ))
+    echo "or $percentage%"
+fi
 
 
 # Draw a picture/take notes on the directory structure that's set up after
