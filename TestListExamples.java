@@ -30,5 +30,15 @@ public class TestListExamples {
     assertEquals(expected, merged);
   }
 
+  @Test(timeout = 500)
+  public void testFilter(){
+    List<String> list = Arrays.asList("moon","sun","moon","pluto");
+    List<String> result = ListExamples.filter(list,new IsMoon());
+    List<String> expected = new ArrayList<>();
+    expected.add("moon");
+    expected.add("moon");
+    assertEquals(expected,result);
+  }
+
   
 }
